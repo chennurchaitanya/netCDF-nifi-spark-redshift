@@ -1,0 +1,131 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.cc.netCDF</groupId>
+  <artifactId>InitialCDF</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>InitialCDF</name>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <spark.core.version>2.4.4</spark.core.version>
+    <scala.binary.version>2.11</scala.binary.version>
+    <scala.version>2.11.11</scala.version>
+    <slf4j.version>1.7.18</slf4j.version>
+    <gson.version>2.4</gson.version>
+    <kafka.version>0-10</kafka.version>
+    <json.simple>1.1.1</json.simple>
+    <commons.version>3.4.1</commons.version>
+    <avro.version>1.7.7</avro.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_${scala.binary.version}</artifactId>
+      <version>${spark.core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-streaming_${scala.binary.version}</artifactId>
+      <version>${spark.core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-streaming-kafka-${kafka.version}_${scala.binary.version}</artifactId>
+      <version>${spark.core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql-kafka-${kafka.version}_${scala.binary.version}</artifactId>
+      <version>${spark.core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-hive_${scala.binary.version}</artifactId>
+      <version>${spark.core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.databricks</groupId>
+      <artifactId>spark-avro_2.11</artifactId>
+      <version>4.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch-spark_2.11</artifactId>
+      <version>2.4.5</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.ucar</groupId>
+      <artifactId>netcdf</artifactId>
+      <version>4.2</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/lib/netcdf-4.2.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-configuration2</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.ucar</groupId>
+      <artifactId>unidataCommon</artifactId>
+      <version>4.2.20</version>
+    </dependency>
+    <dependency>
+      <groupId>com.databricks</groupId>
+      <artifactId>spark-redshift_2.11</artifactId>
+      <version>2.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-s3</artifactId>
+      <version>1.11.696</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.10</version>
+        <configuration>
+          <downloadSources>true</downloadSources>
+          <downloadJavadocs>false</downloadJavadocs>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>3.4.4</version>
+        <!-- <groupId>org.scala-tools</groupId> <artifactId>maven-scala-plugin</artifactId>
+            <version>2.15.2</version> -->
+        <executions>
+          <execution>
+            <id>scala-compile-first</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>add-source</goal>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Comment this assembly plugin after every update in library -->
+
+      <!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>2.4.1</version>
+          <configuration> <descriptors> <descriptor>src/main/resources/zip.xml</descriptor>
+          </descriptors> </configuration> <executions> <execution> <id>make-assembly</id>
+          <phase>package</phase> <goals> <goal>single</goal> </goals> </execution>
+          </executions> </plugin> -->
+      <!-- Comment this assembly plugin after every update in library -->
+    </plugins>
+    <!-- <finalName>merlin-core</finalName> -->
+
+  </build>
+
+</project>

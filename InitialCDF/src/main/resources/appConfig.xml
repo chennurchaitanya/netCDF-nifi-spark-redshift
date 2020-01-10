@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+    <system />
+    <properties config-name="sparkConfig" fileName="sparkConfig-e3h.properties" />
+    <properties config-name="appConfig" fileName="appDefaults-e3h.properties" />
+</configuration>

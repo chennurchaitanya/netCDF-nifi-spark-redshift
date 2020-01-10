@@ -1,0 +1,25 @@
+spark-submit --class com.cc.netCDF.application.WetherForcastDataProcess --master yarn
+--jars hdfs:///DMAA/codebase/Config/greenplum-spark_2.11-1.6.0.jar,hdfs:///DMAA/codebase/Config/spark-streaming-kafka-0-10_2.11-2.3.2.3.1.0.0-78.jar,hdfs:///DMAA/codebase/Config/spark-sql-kafka-0-10_2.11-2.3.2.3.1.0.0-78.jar,hdfs:///DMAA/codebase/Config/kafka-clients-2.0.0.3.1.0.0-78.jar --files /e3h_projects/kafka-config/kafka-jaas.conf#kafka-jaas.conf,/etc/security/keytabs/svc.hspark-etl1000-for-kafka.keytab#svc.hspark-etl1000-for-kafka.keytab --driver-java-options "-Djava.security.auth.login.config=/e3h_projects/kafka-config/kafka-jaas.conf" --conf "spark.executor.extraJavaOptions=-Djava.security.auth.login.config=/e3h_projects/kafka-config/kafka-jaas.conf" --principal svc.hspark-etl1000@ADS.AEXP.COM --keytab /etc/security/keytabs/svc.hspark-etl1000.keytab --num-executors 20 hdfs:///DMAA/merlin/codebase/dim_Framework-1.0-SNAPSHOT.jar e3h
+
+spark-shell --master yarn --jars hdfs:///codebase/InitialCDF-1.0-SNAPSHOT.jar,hdfs:///codebase/extra/redshift-jdbc42-1.2.1.1001.jar,hdfs:///codebase/extra/spark-avro_2.11-3.2.0.jar,hdfs:///codebase/extra/spark-redshift_2.11-2.0.1.jar,hdfs:///codebase/extra/netcdf-4.2.jar,hdfs:///codebase/extra/commons-configuration2-2.0.jar --num-executors 3 --driver-memory 3g --executor-memory 3g --conf "spark.dynamicAllocation.enabled=false" --packages org.apache.spark:spark-avro_2.11:2.4.0
+
+sc.hadoopConfiguration.set("fs.s3n.awsAccessKeyId", "AKIAIHAQMKB625HOT2KQ")
+sc.hadoopConfiguration.set("fs.s3n.awsSecretAccessKey", "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")
+com.cc.netCDF.application.WetherForcastProcess.downloadFromS3("aws-earth-mo-atmospheric-mogreps-g-prd","00807f94c79288012c537e230bd0f06bfad89438.nc","/tmp/00807f94c79288012c537e230bd0f06bfad89438.nc")
+com.cc.netCDF.application.WetherForcastProcess.getCubeDetails("/tmp/00807f94c79288012c537e230bd0f06bfad89438.nc")
+com.cc.netCDF.application.WetherForcastProcess.processNetCDF(spark,"/tmp/00807f94c79288012c537e230bd0f06bfad89438.nc","2020-01-06 03:00:00","lwe_snowfall_rate")
+
+
+  590  scp -i ec2nifi.pem /Users/chaitanyachennur/Downloads/commons-configuration2-2.0.jar hadoop@ec2-35-178-84-107.eu-west-2.compute.amazonaws.com:/tmp/
+  591  scp -i ec2nifi_new.pem netcdf-4.2.jar hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+  592  scp -i ec2nifi_new.pem ./Workbench-personal/InitialCDF/target/InitialCDF-1.0-SNAPSHOT.jar hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+  593  scp -i ec2nifi_new.pem 9e5c7773cbac66102c5d714e2c1c177b7cc5559b.nc hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+  594  scp -i ec2nifi_new.pem spark-redshift_2.11-2.0.1.jar hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+  595  scp -i ec2nifi_new.pem ./Workbench-personal/InitialCDF/target/InitialCDF-1.0-SNAPSHOT.jar hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+  596  scp -i ec2nifi_new.pem ./Workbench-personal/InitialCDF/target/InitialCDF-1.0-SNAPSHOT.jar hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+  597  scp -i ec2nifi_new.pem ./Workbench-personal/InitialCDF/target/InitialCDF-1.0-SNAPSHOT.jar hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+  598  scp -i ec2nifi_new.pem /Users/chaitanyachennur/Downloads/spark-avro_2.11-4.0.0.jar hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+  599  scp -i ec2nifi_new.pem /Users/chaitanyachennur/Downloads/spark-avro_2.11-3.2.0.jar hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+  600  scp -i ec2nifi_new.pem /Users/chaitanyachennur/Downloads/redshift-jdbc42-1.2.1.1001.jar hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+  601  scp -i ec2nifi_new.pem ./Workbench-personal/InitialCDF/target/InitialCDF-1.0-SNAPSHOT.jar hadoop@ec2-44-224-32-2.us-west-2.compute.amazonaws.com:/tmp/
+
