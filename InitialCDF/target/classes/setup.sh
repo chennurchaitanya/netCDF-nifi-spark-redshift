@@ -1,5 +1,5 @@
 #Spin - nifi large instance
-aws ec2 run-instances --image-id ami-087c2c50437d0b80d --count 1 --instance-type t2.large --key-name ec2pem --user-data file:///Users/chaitanyachennur/Downloads/setup.sh --security-group-ids sg-088eaa2dd16ed7180
+aws ec2 run-instances --image-id ami-087c2c50437d0b80d --count 1 --instance-type t2.large --key-name ec2pem --user-data file:///Users/chaitanyachennur/Downloads/setup_main.sh --security-group-ids sg-088eaa2dd16ed7180
 
 aws ec2 run-instances --image-id ami-087c2c50437d0b80d --count 1 --instance-type t2.micro --key-name ec2pem --user-data file:///Users/chaitanyachennur/Downloads/setup_postgres.sh --security-group-ids sg-0f76841fc8f7ecd7e
 

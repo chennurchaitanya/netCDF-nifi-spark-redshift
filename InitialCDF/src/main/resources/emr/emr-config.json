@@ -1,0 +1,18 @@
+[
+  {
+    "Classification": "spark",
+    "Properties": {
+      "maximizeResourceAllocation": "false"
+    }
+  },
+  {
+      "Classification": "spark-defaults",
+      "Properties": {
+      "spark.executor.memory": "2G",
+      "spark.driver.memory": "2G",
+      "spark.executor.cores": "1",
+      "spark.executor.instances": "1",
+      "spark.dynamicAllocation.enabled": "false"
+      }
+    }
+]
