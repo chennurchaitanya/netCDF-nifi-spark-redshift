@@ -86,11 +86,14 @@ object WetherForcastProcess {
       var dim4shape = ncfile.getVariables().get(0).getShape(3)
     }
   }
-  def processNetCDF(spark:SparkSession,ncfile1: String,forcastTime: String,usecaseName: String): Unit ={
+  def processNetCDF(spark:SparkSession,ncfile1: String,forcastTime: String,usecaseName: String,redshiftURI: String,s3tempDir: String): Unit ={
     val netcdfUri = ncfile1
     val ncfile = open(netcdfUri)
     val cubeName = ncfile.getVariables().get(0).getName
     val numOfDiemsions = ncfile.getVariables().get(0).getDimensionsString.split(" ").length
+
+
+
     import spark.implicits._
 
     numOfDiemsions match {
@@ -149,7 +152,7 @@ object WetherForcastProcess {
         val df6 = spark.sql("select dim1,dim1_value,dim2,rowid,dim2._1 as dim2_value from temp2,dim2 where temp2.dim2=dim2._2")
         df6.registerTempTable("temp3")
         val final_df = spark.sql(s"select '${cubeName}' as usecase,'' as forcast_period,dim1_value,dim2_value,rowid,snow._1 as result,current_timestamp() as load_ts from snow,temp3 where snow._2=temp3.rowid and cast(snow._1 as float) <> 0.0")
-        writeToRedshift(spark,final_df,"redshift-cluster-1.ct0suyskzte8.us-west-2.redshift.amazonaws.com:15432/dev","/tmp",usecaseName)
+        writeToRedshift(spark,final_df,redshiftURI,s3tempDir,usecaseName)
       }
       case 3  => {
         val dim1 = ncfile.read(ncfile.getVariables().get(0).getDimensionsString.split(" ")(0), true).toString
@@ -217,8 +220,7 @@ object WetherForcastProcess {
         val df7 = spark.sql("select dim1,dim1_value,dim2,dim2_value,dim3,rowid,dim3._1 as dim3_value from temp3,dim3 where temp3.dim3=dim3._2")
         df7.registerTempTable("temp4")
         val final_df = spark.sql(s"select '${cubeName}' as usecase,'${forcastTime}' as forcast_time,dim1_value,dim2_value,dim3_value,rowid,snow._1 as result,current_timestamp() as load_ts from snow,temp4 where snow._2=temp4.rowid and cast(snow._1 as float) <> 0.0")
-
-        writeToRedshift(spark,final_df,"jdbc:redshift://redshift-cluster-1.ct0suyskzte8.us-west-2.redshift.amazonaws.com:15432/dev?user=cchennur&password=Santrotvs#123","s3n://cc-temp-wetherforecast/temp",usecaseName)
+        writeToRedshift(spark,final_df,redshiftURI,s3tempDir,usecaseName)
       }
       case _  => println("Add new dim code")
     }

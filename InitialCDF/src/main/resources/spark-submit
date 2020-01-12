@@ -7,7 +7,7 @@ sc.hadoopConfiguration.set("fs.s3n.awsAccessKeyId", "AKIAIHAQMKB625HOT2KQ")
 sc.hadoopConfiguration.set("fs.s3n.awsSecretAccessKey", "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")
 com.cc.netCDF.application.WetherForcastProcess.downloadFromS3("aws-earth-mo-atmospheric-mogreps-g-prd","00807f94c79288012c537e230bd0f06bfad89438.nc","/tmp/00807f94c79288012c537e230bd0f06bfad89438.nc")
 com.cc.netCDF.application.WetherForcastProcess.getCubeDetails("/tmp/00807f94c79288012c537e230bd0f06bfad89438.nc")
-com.cc.netCDF.application.WetherForcastProcess.processNetCDF(spark,"/tmp/00807f94c79288012c537e230bd0f06bfad89438.nc","2020-01-06 03:00:00","lwe_snowfall_rate")
+com.cc.netCDF.application.WetherForcastProcess.processNetCDF(spark,"/tmp/00807f94c79288012c537e230bd0f06bfad89438.nc","2020-01-06 03:00:00","lwe_snowfall_rate",jdbc:redshift://redshift-cluster-1.ct0suyskzte8.us-west-2.redshift.amazonaws.com:15432/dev?user=cchennur&password=Santrotvs#123","s3n://cc-temp-wetherforecast/temp")
 
 
   590  scp -i ec2nifi.pem /Users/chaitanyachennur/Downloads/commons-configuration2-2.0.jar hadoop@ec2-35-178-84-107.eu-west-2.compute.amazonaws.com:/tmp/

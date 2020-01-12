@@ -10,15 +10,13 @@ aws ec2 run-instances --image-id ami-087c2c50437d0b80d --count 1 --instance-type
 curl -o $path/setup_postgres.sh  https://raw.githubusercontent.com/chaitanyaexplore/netCDF-nifi-spark-redshift/master/InitialCDF/src/main/resources/postgres/setup_postgres.sh
 aws ec2 run-instances --image-id ami-087c2c50437d0b80d --count 1 --instance-type t2.micro --key-name ec2pem --user-data file://$path/setup_postgres.sh --security-group-ids sg-0f76841fc8f7ecd7e
 
-
 curl -o $path/met_wf_nifi_flow_template.xml https://raw.githubusercontent.com/chaitanyaexplore/netCDF-nifi-spark-redshift/master/InitialCDF/src/main/resources/nifi/met_wf_nifi_flow_template.xml
-curl -k -F template=@$path/met_wf_nifi_flow_template.xml -X POST http://35.164.95.252:8080/nifi-api/process-groups/root/templates/upload
+curl -k -F template=@$path/met_wf_nifi_flow_template.xml -X POST http://35.165.52.217:8080/nifi-api/process-groups/root/templates/upload
 ## change varibles
 
 #EMR
 curl -o $path/emr-config.json https://raw.githubusercontent.com/chaitanyaexplore/netCDF-nifi-spark-redshift/master/InitialCDF/src/main/resources/nifi/met_wf_nifi_flow_template.xml
-#Manually create EMR
-#create asw EMR cluster with advanced options (services : hadoop,spark,livy)
+create asw EMR cluster with advanced options (services : hadoop,spark,livy)
 
 scp -i ec2pem.pem /Users/chaitanyachennur/Downloads/commons-configuration2-2.0.jar hadoop@ec2-34-223-52-130.us-west-2.compute.amazonaws.com:/tmp
 scp -i ec2pem.pem netcdf-4.2.jar hadoop@ec2-34-223-52-130.us-west-2.compute.amazonaws.com:/tmp

@@ -3,11 +3,8 @@ sudo yum install -y postgresql-server
 sudo service postgresql initdb
 sudo systemctl enable postgresql.service
 sudo systemctl start postgresql.service
-sudo sed -i 's/'localhost'/'*'/g' /var/lib/pgsql/data/postgresql.conf
-sudo sed -i 's/'#listen_addresses'/'listen_addresses'/g' /var/lib/pgsql/data/postgresql.conf
 sudo su - postgres
 sudo su - postgres -c 'psql -c "create database cs_livy"'
-sudo su - postgres -c 'psql -c "create user cchennur with password 'santrotvs'"'
 sudo su - postgres -c 'psql -d cs_livy -c "create schema livy"'
 sudo su - postgres -c 'psql -d cs_livy -c "CREATE TABLE livy.livy_pool(flowname character varying(100) COLLATE pg_catalog."default",pool_size integer,allocated integer,post_request character varying(10000000) COLLATE pg_catalog."default",enable character varying(10) COLLATE pg_catalog."default",pool_description character varying(4000) COLLATE pg_catalog."default")"'
 sudo su - postgres -c 'psql -d cs_livy -c "CREATE TABLE livy.livy_sessions(flowname character varying(100) COLLATE pg_catalog."default",sessionid character varying(20) COLLATE pg_catalog."default",applicationid character varying(1000) COLLATE pg_catalog."default",last_updated timestamp without time zone,app_status character varying(50) COLLATE pg_catalog."default",create_ts timestamp without time zone,description character varying(10000) COLLATE pg_catalog."default",status character varying(100) COLLATE pg_catalog."default")"'
