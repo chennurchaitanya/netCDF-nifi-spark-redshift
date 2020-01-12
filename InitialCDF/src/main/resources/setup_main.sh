@@ -17,17 +17,17 @@ curl -k -F template=@$path/met_wf_nifi_flow_template.xml -X POST http://35.164.9
 
 #EMR
 curl -o $path/emr-config.json https://raw.githubusercontent.com/chaitanyaexplore/netCDF-nifi-spark-redshift/master/InitialCDF/src/main/resources/nifi/met_wf_nifi_flow_template.xml
-#Manually create EMR
-#create asw EMR cluster with advanced options (services : hadoop,spark,livy)
+#Manually create EMR with advanced options (services : hadoop,spark,livy)
+#Give permissions to security group master ports 8998
 
-scp -i ec2pem.pem /Users/chaitanyachennur/Downloads/commons-configuration2-2.0.jar hadoop@ec2-34-223-52-130.us-west-2.compute.amazonaws.com:/tmp
-scp -i ec2pem.pem netcdf-4.2.jar hadoop@ec2-34-223-52-130.us-west-2.compute.amazonaws.com:/tmp
-scp -i ec2pem.pem ./Workbench-personal/InitialCDF/target/InitialCDF-1.0-SNAPSHOT.jar hadoop@ec2-34-223-52-130.us-west-2.compute.amazonaws.com:/tmp
-scp -i ec2pem.pem spark-redshift_2.11-2.0.1.jar hadoop@ec2-34-223-52-130.us-west-2.compute.amazonaws.com:/tmp
-scp -i ec2pem.pem /Users/chaitanyachennur/Downloads/spark-avro_2.11-4.0.0.jar hadoop@ec2-34-223-52-130.us-west-2.compute.amazonaws.com:/tmp
-scp -i ec2pem.pem /Users/chaitanyachennur/Downloads/redshift-jdbc42-1.2.1.1001.jar hadoop@ec2-34-223-52-130.us-west-2.compute.amazonaws.com:/tmp
-
+curl -o /tmp/commons-configuration2-2.0.jar https://repo1.maven.org/maven2/org/apache/commons/commons-configuration2/2.0/commons-configuration2-2.0.jar
+curl -o /tmp/netcdf-4.2.jar https://repo1.maven.org/maven2/edu/ucar/netcdf/4.2/netcdf-4.2.jar
+curl -o /tmp/spark-redshift_2.11-2.0.1.jar https://repo1.maven.org/maven2/com/databricks/spark-redshift_2.11/2.0.1/spark-redshift_2.11-2.0.1.jar
+curl -o /tmp/spark-avro_2.11-4.0.0.jar https://repo1.maven.org/maven2/com/databricks/spark-avro_2.11/4.0.0/spark-avro_2.11-4.0.0.jar
+curl -o /tmp/redshift-jdbc42-1.2.1.1001.jar https://repository.mulesoft.org/nexus/content/repositories/public/com/amazon/redshift/redshift-jdbc42/1.2.1.1001/redshift-jdbc42-1.2.1.1001.jar
+curl -o /tmp/InitialCDF-1.0-SNAPSHOT.jar https://github.com/chaitanyaexplore/netCDF-nifi-spark-redshift/raw/master/InitialCDF/target/InitialCDF-1.0-SNAPSHOT.jar
+hdfs dfs -mkdir -p /codebase/extra/
 hdfs dfs -copyFromLocal /tmp/*.jar /codebase/extra/
 
 #3 - redshift
-aws redshift create-cluster --node-type dc2.large --number-of-nodes 1 --master-username adminuser --master-user-password Santrotvs@123 --cluster-identifier redshift_cluster
+aws redshift create-cluster --node-type dc2.large --cluster-type single-node --master-username adminuser --master-user-password Santrotvs#123 --cluster-identifier redshift-cluster
