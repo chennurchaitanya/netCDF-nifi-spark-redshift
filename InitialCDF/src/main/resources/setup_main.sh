@@ -10,10 +10,19 @@ aws ec2 run-instances --image-id ami-087c2c50437d0b80d --count 1 --instance-type
 curl -o $path/setup_postgres.sh  https://raw.githubusercontent.com/chaitanyaexplore/netCDF-nifi-spark-redshift/master/InitialCDF/src/main/resources/postgres/setup_postgres.sh
 aws ec2 run-instances --image-id ami-087c2c50437d0b80d --count 1 --instance-type t2.micro --key-name ec2pem --user-data file://$path/setup_postgres.sh --security-group-ids sg-0f76841fc8f7ecd7e
 
+## wait for nifi ui to be up .. nifi public ip : 8080/nifi
 
+## import nifi flow template
 curl -o $path/met_wf_nifi_flow_template.xml https://raw.githubusercontent.com/chaitanyaexplore/netCDF-nifi-spark-redshift/master/InitialCDF/src/main/resources/nifi/met_wf_nifi_flow_template.xml
 curl -k -F template=@$path/met_wf_nifi_flow_template.xml -X POST http://35.164.95.252:8080/nifi-api/process-groups/root/templates/upload
-## change varibles
+## create flow from template by drag into palette
+
+## Postgres control service
+## check for any failues with nifi instance @ /var/log/cloud-init-output.log
+## run commands if anything failed.
+
+
+
 
 #EMR
 curl -o $path/emr-config.json https://raw.githubusercontent.com/chaitanyaexplore/netCDF-nifi-spark-redshift/master/InitialCDF/src/main/resources/nifi/met_wf_nifi_flow_template.xml
